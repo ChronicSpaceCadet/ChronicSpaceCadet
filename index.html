@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NPC Guide</title>
+  <style>
+    body { font-family: Arial; background: #f0f0f0; }
+    #npcBox { width: 400px; margin: 50px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 0 10px #aaa; }
+    #messages { height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 5px; margin-bottom: 10px; }
+    input { width: calc(100% - 12px); padding: 5px; }
+  </style>
+</head>
+<body>
+  <div id="npcBox">
+    <div id="messages"><em>NPC: Welcome to your home!</em></div>
+    <input id="userInput" placeholder="Say something..." />
+  </div>
+
+  <script>
+    const messages = document.getElementById("messages");
+    const input = document.getElementById("userInput");
+
+    input.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        const userMsg = input.value;
+        if (!userMsg) return;
+        messages.innerHTML += `<div>You: ${userMsg}</div>`;
+        input.value = "";
+
+        // NPC response (scripted for now)
+        let response = "NPC: I don't know how to answer that yet.";
+        if (userMsg.toLowerCase().includes("hello")) response = "NPC: Hello traveler! Welcome to your home.";
+        if (userMsg.toLowerCase().includes("help")) response = "NPC: You can explore portals or ask me questions about the world.";
+
+        messages.innerHTML += `<div>${response}</div>`;
+        messages.scrollTop = messages.scrollHeight;
+      }
+    });
+  </script>
+</body>
+</html>
