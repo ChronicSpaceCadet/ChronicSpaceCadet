@@ -14,7 +14,7 @@
       cursor: pointer;
     }
     #chatBox {
-      display: none; /* hidden by default */
+      display: none;
       background: white;
       border-radius: 10px;
       padding: 20px;
@@ -22,7 +22,7 @@
       margin-top: 10px;
     }
     #messages {
-      height: 200px;
+      height: 220px;
       overflow-y: auto;
       border: 1px solid #ccc;
       padding: 5px;
@@ -48,18 +48,17 @@
 </head>
 <body>
   <div class="npc-container">
-    <!-- GIF on the page -->
-    <img src="npc-animation.gif" alt="Chronic Space Cadet" class="npc-gif">
 
-    <!-- Talk bubble / button -->
+    <!-- YOUR GIF -->
+    <img src="npc-animation.gif" class="npc-gif">
+
+    <!-- TALK BUTTON -->
     <div class="talk-button" id="openChat">💬 Talk</div>
 
-    <!-- Chat box -->
+    <!-- CHAT -->
     <div id="chatBox">
-      <div id="messages">
-        <div><img src="npc-face.jpg" class="npc-face" alt="NPC">NPC: Welcome to your home!</div>
-      </div>
-      <input id="userInput" placeholder="Say something..." />
+      <div id="messages"></div>
+      <input id="userInput" placeholder="Type here..." />
     </div>
   </div>
 
@@ -69,34 +68,56 @@
     const messages = document.getElementById("messages");
     const input = document.getElementById("userInput");
 
-    // Show chat box when talk button is clicked
+    let introShown = false;
+
     openChat.addEventListener("click", () => {
       chatBox.style.display = "block";
       input.focus();
+
+      // SHOW INTRO ONLY FIRST TIME
+      if (!introShown) {
+        showIntro();
+        introShown = true;
+      }
     });
 
-    // Chat logic
+    function showIntro() {
+      const intro = `
+      <div>
+      <img src="npc-face.jpg" class="npc-face">
+      Chronic Space Cadet: Hello explorer 👋  
+      I am the Chronic Space Cadet… a helper, guide, and messenger of this world.  
+      I help new travelers understand the systems, complete quests, and find their path.  
+      If you would like guidance, type <b>help</b>.
+      </div>
+      `;
+      messages.innerHTML += intro;
+    }
+
     input.addEventListener("keydown", function(e) {
       if (e.key === "Enter") {
         const userMsg = input.value.trim();
         if (!userMsg) return;
+
         messages.innerHTML += `<div>You: ${userMsg}</div>`;
         input.value = "";
 
-        // NPC response
-        let response = "NPC: I don't know how to answer that yet.";
-        if (userMsg.toLowerCase().includes("hello")) {
-          response = "NPC: Hello traveler! Welcome to your home.";
-        }
+        let response = "I do not know how to answer that yet.";
+
         if (userMsg.toLowerCase().includes("help")) {
-          response = "NPC: You can explore portals or ask me questions about the world.";
-          // Could later add clickable options here
-        }
-        if (userMsg.toLowerCase().includes("what is chronic space")) {
-          response = "NPC: Chronic Space is a learning immersive game empowering interactive collaborative experiences that teach, guide, and create real-world impact while players explore and build.";
+          response = `
+          You can ask:
+          <br>• What is Chronic Space?
+          <br>• Where do I start?
+          <br>• Show beginner quests
+          `;
         }
 
-        messages.innerHTML += `<div><img src="npc-face.jpg" class="npc-face" alt="NPC">${response}</div>`;
+        if (userMsg.toLowerCase().includes("what is chronic")) {
+          response = "Chronic Space is an immersive system that blends learning, real-world skills, community, and adventure to empower people while creating real impact.";
+        }
+
+        messages.innerHTML += `<div><img src="npc-face.jpg" class="npc-face">${response}</div>`;
         messages.scrollTop = messages.scrollHeight;
       }
     });
