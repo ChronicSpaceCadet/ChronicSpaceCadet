@@ -7,24 +7,21 @@
     #npcBox { width: 400px; margin: 50px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 0 10px #aaa; }
     #messages { height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 5px; margin-bottom: 10px; }
     input { width: calc(100% - 12px); padding: 5px; }
+    img { display: block; margin: 0 auto 10px; border-radius:50%; width:150px; }
   </style>
 </head>
 <body>
   <div id="npcBox">
+    <!-- NPC Image -->
+    <img src="ChronicSpaceCadet/636106248_881875211331713_1440380524836899446_n.jpg" 
+         alt="NPC">
+
+    <!-- Chat messages -->
     <div id="messages"><em>NPC: Welcome to your home!</em></div>
+
+    <!-- Input field -->
     <input id="userInput" placeholder="Say something..." />
- <div id="npcBox">
-  <!-- NPC Image -->
-  <img src="ChronicSpaceCadet/636106248_881875211331713_1440380524836899446_n.jpg" 
-       alt="NPC" 
-       style="width:150px; display:block; margin:0 auto 10px; border-radius:50%;">
-
-  <!-- Chat messages -->
-  <div id="messages"><em>NPC: Welcome to your home!</em></div>
-
-  <!-- Input field -->
-  <input id="userInput" placeholder="Say something..." />
-</div>
+  </div>
 
   <script>
     const messages = document.getElementById("messages");
@@ -32,7 +29,7 @@
 
     input.addEventListener("keydown", function(e) {
       if (e.key === "Enter") {
-        const userMsg = input.value;
+        const userMsg = input.value.trim();
         if (!userMsg) return;
         messages.innerHTML += `<div>You: ${userMsg}</div>`;
         input.value = "";
