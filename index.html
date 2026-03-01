@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chronic Space Cadet NPC</title>
+  <style>
+    body { font-family: Arial; background: #f0f0f0; }
+    #npcBox { width: 400px; margin: 50px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 0 10px #aaa; }
+    #messages { height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 5px; margin-bottom: 10px; background:#fafafa; }
+    input { width: calc(100% - 12px); padding: 5px; }
+  </style>
+</head>
+<body>
+  <div id="npcBox">
+    <!-- Chat messages -->
+    <div id="messages">
+      <em>Chronic Space Cadet: Hello! 👋 I’m the Chronic Space Cadet, your helper and guide in this world. I juggle scrolls, keys, and glowing artifacts to keep everything running smoothly. I can guide you, answer questions, and give you quests as you explore. Type 'help' to see what I can do!</em>
+    </div>
+
+    <!-- Input field -->
+    <input id="userInput" placeholder="Say something..." />
+  </div>
+
+  <script>
+    const messages = document.getElementById("messages");
+    const input = document.getElementById("userInput");
+
+    input.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        const userMsg = input.value.trim();
+        if (!userMsg) return;
+
+        messages.innerHTML += `<div><strong>You:</strong> ${userMsg}</div>`;
+        input.value = "";
+
+        // Scripted responses
+        let response = "Chronic Space Cadet: I don't know how to answer that yet.";
+
+        if (userMsg.toLowerCase() === "help") {
+          response = `Chronic Space Cadet: Here’s what I can do for you:
+1. What is Chronic Space?
+2. Where do I start?
+(Reply with the option number or question.)`;
+        }
+
+        if (userMsg === "1" || userMsg.toLowerCase().includes("what is chronic space")) {
+          response = `Chronic Space Cadet: Chronic Space is a learning immersive game — an interactive, collaborative system that empowers players while teaching them. It intertwines learning, creative projects, and real-world skills with game mechanics. Players explore, create, and earn rewards while learning about art, business, farming, technology, and more. It generates systems that help players build, collaborate, and create meaningful change in the real world.`;
+        }
+
+        if (userMsg === "2" || userMsg.toLowerCase().includes("where do i start")) {
+          response = `Chronic Space Cadet: Great question! You start with a beginner quest. These quests teach you how the world works, give small rewards, and guide you into the systems step by step. Type 'help' anytime to see your options or ask questions as you explore.`;
+        }
+
+        messages.innerHTML += `<div>${response}</div>`;
+        messages.scrollTop = messages.scrollHeight;
+      }
+    });
+  </script>
+</body>
+</html>
