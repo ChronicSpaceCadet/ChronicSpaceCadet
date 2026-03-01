@@ -1,33 +1,81 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Chronic Space Cadet NPC</title>
+  <title>Chronic Space NPC</title>
   <style>
     body { font-family: Arial; background: #f0f0f0; }
-    #npcBox { width: 400px; margin: 50px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 0 10px #aaa; }
-    #messages { height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 5px; margin-bottom: 10px; }
-    input { width: calc(100% - 12px); padding: 5px; }
-    img { display: block; margin: 0 auto 10px; border-radius:50%; width:150px; }
+    .npc-container {
+      width: 400px;
+      margin: 50px auto;
+      text-align: center;
+    }
+    .npc-gif {
+      width: 200px;
+      cursor: pointer;
+    }
+    #chatBox {
+      display: none; /* hidden by default */
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px #aaa;
+      margin-top: 10px;
+    }
+    #messages {
+      height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+    #userInput { width: calc(100% - 12px); padding: 5px; }
+    .npc-face {
+      width: 50px;
+      border-radius: 50%;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+    .talk-button {
+      display: inline-block;
+      margin-top: 5px;
+      padding: 5px 10px;
+      background: #4CAF50;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <div id="npcBox">
-    <!-- Avatar Image -->
-    <img src="cadet-avatar.png" alt="Chronic Space Cadet">
+  <div class="npc-container">
+    <!-- GIF on the page -->
+    <img src="npc-animation.gif" alt="Chronic Space Cadet" class="npc-gif">
 
-    <!-- Chat Messages -->
-    <div id="messages">
-      <em>Chronic Space Cadet: Hello! 👋 I’m your guide in this world. I help explorers understand the systems, quests, and opportunities here. Type "help" to see what you can do!</em>
+    <!-- Talk bubble / button -->
+    <div class="talk-button" id="openChat">💬 Talk</div>
+
+    <!-- Chat box -->
+    <div id="chatBox">
+      <div id="messages">
+        <div><img src="npc-face.jpg" class="npc-face" alt="NPC">NPC: Welcome to your home!</div>
+      </div>
+      <input id="userInput" placeholder="Say something..." />
     </div>
-
-    <!-- Input Field -->
-    <input id="userInput" placeholder="Say something..." />
   </div>
 
   <script>
+    const chatBox = document.getElementById("chatBox");
+    const openChat = document.getElementById("openChat");
     const messages = document.getElementById("messages");
     const input = document.getElementById("userInput");
 
+    // Show chat box when talk button is clicked
+    openChat.addEventListener("click", () => {
+      chatBox.style.display = "block";
+      input.focus();
+    });
+
+    // Chat logic
     input.addEventListener("keydown", function(e) {
       if (e.key === "Enter") {
         const userMsg = input.value.trim();
@@ -35,20 +83,20 @@
         messages.innerHTML += `<div>You: ${userMsg}</div>`;
         input.value = "";
 
-        // NPC responses
-        let response = "Chronic Space Cadet: I don't know how to answer that yet.";
-
+        // NPC response
+        let response = "NPC: I don't know how to answer that yet.";
         if (userMsg.toLowerCase().includes("hello")) {
-          response = "Chronic Space Cadet: Hello traveler! Welcome to your home.";
+          response = "NPC: Hello traveler! Welcome to your home.";
         }
-        else if (userMsg.toLowerCase().includes("help")) {
-          response = "Chronic Space Cadet: You can explore options. For example:\n- 'What is Chronic Space?'\n- 'Beginner quests'\n- 'Explore portals'";
+        if (userMsg.toLowerCase().includes("help")) {
+          response = "NPC: You can explore portals or ask me questions about the world.";
+          // Could later add clickable options here
         }
-        else if (userMsg.toLowerCase().includes("what is chronic space")) {
-          response = "Chronic Space is a learning immersive game empowering interactive, collaborative experiences. It intertwines learning, empowerment, and incentives to keep people engaged. It gradually teaches and guides players to create things that have real-world impact, linking social platforms, quests, and projects to help them grow skills, make, sell, and lead in their areas of interest.";
+        if (userMsg.toLowerCase().includes("what is chronic space")) {
+          response = "NPC: Chronic Space is a learning immersive game empowering interactive collaborative experiences that teach, guide, and create real-world impact while players explore and build.";
         }
 
-        messages.innerHTML += `<div>${response}</div>`;
+        messages.innerHTML += `<div><img src="npc-face.jpg" class="npc-face" alt="NPC">${response}</div>`;
         messages.scrollTop = messages.scrollHeight;
       }
     });
