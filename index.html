@@ -2,10 +2,8 @@
 <html>
 <head>
   <title>Chronic Space Cadet Chat</title>
-  
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-
   <style>
     body { 
       font-family: Arial, sans-serif; 
@@ -21,22 +19,24 @@
       gap: 10px; /* space between avatar and chat */
     }
 
+    /* GIF avatar always visible */
     #npcGif {
-      width: 120px; /* adjust as needed */
+      width: 120px;
       cursor: pointer;
     }
 
+    /* Scroll chat box */
     #npcBox {
       width: 400px;
-      height: 500px; /* match scroll image height */
-      background-image: url('scroll.png'); /* full scroll image */
+      height: 500px;
+      background-image: url('scroll.png');
       background-size: contain;
       background-repeat: no-repeat;
-      padding-top: 80px;    /* space for top roll */
-      padding-bottom: 80px; /* space for bottom roll */
+      padding-top: 80px;    /* top roll */
+      padding-bottom: 80px; /* bottom roll */
       box-sizing: border-box;
       position: relative;
-      display: none; /* hidden by default, shown when avatar clicked */
+      display: none; /* hidden until avatar clicked */
     }
 
     #chatArea {
@@ -50,8 +50,8 @@
       margin-bottom: 10px;
     }
 
-    .npc-message { color: #5b3a1e; font-weight: bold; }
-    .user-message { color: #1e3a5b; }
+    .npc-message { color: #5b3a1e; font-weight: bold; } /* NPC font color */
+    .user-message { color: #1e3a5b; font-weight: bold; } /* User font color */
 
     #userInput {
       width: calc(100% - 20px);
@@ -65,10 +65,10 @@
 
 <body>
   <div id="npcContainer">
-    <!-- Avatar GIF -->
-    <img id="npcGif" src="cadet.gif" alt="Chronic Space Cadet">
+    <!-- Always-animating GIF -->
+    <img id="npcGif" src="npc-animation.gif" alt="Chronic Space Cadet">
 
-    <!-- Scroll Chat Box -->
+    <!-- Scroll chat box -->
     <div id="npcBox">
       <div id="chatArea">
         <div id="messages" class="npc-message">
@@ -89,20 +89,18 @@
 
     // Show chat when avatar clicked
     npcGif.addEventListener("click", () => {
-      npcBox.style.display = "block";
+      npcBox.style.display = "block"; // chat appears
     });
 
-    // Handle input
+    // Handle input messages
     input.addEventListener("keydown", function(e) {
       if (e.key === "Enter") {
         const userMsg = input.value.trim();
         if (!userMsg) return;
 
-        // Add user message
         messages.innerHTML += `<div class="user-message">You: ${userMsg}</div>`;
         input.value = "";
 
-        // Determine NPC response
         let response = "I don't know how to answer that yet.";
 
         if (userMsg.toLowerCase() === "help") {
