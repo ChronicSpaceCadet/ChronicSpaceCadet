@@ -1,25 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Chronic Space NPC</title>
+  <title>Chronic Space Cadet</title>
   <style>
     body { font-family: Arial; background: #f0f0f0; }
-    .npc-container {
-      width: 400px;
-      margin: 50px auto;
-      text-align: center;
-    }
-    .npc-gif {
-      width: 200px;
-      cursor: pointer;
-    }
+    .npc-container { width: 400px; margin: 50px auto; text-align: center; }
+    .npc-gif { width: 200px; }
     #chatBox {
       display: none;
       background: white;
       border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 0 10px #aaa;
+      padding: 15px;
       margin-top: 10px;
+      box-shadow: 0 0 10px #aaa;
     }
     #messages {
       height: 220px;
@@ -28,99 +21,91 @@
       padding: 5px;
       margin-bottom: 10px;
     }
-    #userInput { width: calc(100% - 12px); padding: 5px; }
-    .npc-face {
-      width: 50px;
-      border-radius: 50%;
-      vertical-align: middle;
-      margin-right: 5px;
-    }
-    .talk-button {
-      display: inline-block;
+    #userInput { width: 100%; padding: 5px; }
+    .talk-btn {
       margin-top: 5px;
       padding: 5px 10px;
       background: #4CAF50;
       color: white;
-      border-radius: 5px;
       cursor: pointer;
+      border-radius: 5px;
+      display: inline-block;
     }
   </style>
 </head>
+
 <body>
-  <div class="npc-container">
 
-    <!-- YOUR GIF -->
-    <img src="npc-animation.gif" class="npc-gif">
+<div class="npc-container">
 
-    <!-- TALK BUTTON -->
-    <div class="talk-button" id="openChat">💬 Talk</div>
+  <!-- YOUR GIF -->
+  <img src="npc-animation.gif" class="npc-gif">
 
-    <!-- CHAT -->
-    <div id="chatBox">
-      <div id="messages"></div>
-      <input id="userInput" placeholder="Type here..." />
-    </div>
+  <!-- TALK BUTTON -->
+  <div class="talk-btn" id="openChat">💬 Talk</div>
+
+  <!-- CHAT -->
+  <div id="chatBox">
+    <div id="messages"></div>
+    <input id="userInput" placeholder="Type here..." />
   </div>
 
-  <script>
-    const chatBox = document.getElementById("chatBox");
-    const openChat = document.getElementById("openChat");
-    const messages = document.getElementById("messages");
-    const input = document.getElementById("userInput");
+</div>
 
-    let introShown = false;
+<script>
+const openChat = document.getElementById("openChat");
+const chatBox = document.getElementById("chatBox");
+const messages = document.getElementById("messages");
+const input = document.getElementById("userInput");
 
-    openChat.addEventListener("click", () => {
-      chatBox.style.display = "block";
-      input.focus();
+let introDone = false;
 
-      // SHOW INTRO ONLY FIRST TIME
-      if (!introShown) {
-        showIntro();
-        introShown = true;
-      }
-    });
+openChat.onclick = () => {
+  chatBox.style.display = "block";
+  input.focus();
 
-    function showIntro() {
-      const intro = `
+  if (!introDone) {
+    messages.innerHTML += `
+    <div>
+    Chronic Space Cadet: Hello explorer 👋  
+    I am a helper, guide, and messenger of this world.  
+    I help new travelers understand the systems, complete quests, and find their path.  
+    If you need guidance, type <b>help</b>.
+    </div>`;
+    introDone = true;
+  }
+};
+
+input.addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    const userMsg = input.value.trim().toLowerCase();
+    if (!userMsg) return;
+
+    messages.innerHTML += `<div>You: ${userMsg}</div>`;
+    input.value = "";
+
+    // STEP 2: HELP OPTIONS
+    if (userMsg === "help") {
+      messages.innerHTML += `
       <div>
-      <img src="npc-face.jpg" class="npc-face">
-      Chronic Space Cadet: Hello explorer 👋  
-      I am the Chronic Space Cadet… a helper, guide, and messenger of this world.  
-      I help new travelers understand the systems, complete quests, and find their path.  
-      If you would like guidance, type <b>help</b>.
-      </div>
-      `;
-      messages.innerHTML += intro;
+      You may ask:
+      <br>1. What is Chronic Space?
+      </div>`;
     }
 
-    input.addEventListener("keydown", function(e) {
-      if (e.key === "Enter") {
-        const userMsg = input.value.trim();
-        if (!userMsg) return;
+    // STEP 3: WHAT IS CHRONIC SPACE
+    if (userMsg.includes("what is chronic")) {
+      messages.innerHTML += `
+      <div>
+      Chronic Space is a learning, immersive, interactive system that blends empowerment, real-world skills, and community.  
+      It guides people through quests, missions, and collaboration to help them grow, build, and create real impact in their lives and the world.
+      </div>`;
+    }
 
-        messages.innerHTML += `<div>You: ${userMsg}</div>`;
-        input.value = "";
+    messages.scrollTop = messages.scrollHeight;
+  }
+});
+</script>
 
-        let response = "I do not know how to answer that yet.";
-
-        if (userMsg.toLowerCase().includes("help")) {
-          response = `
-          You can ask:
-          <br>• What is Chronic Space?
-          <br>• Where do I start?
-          <br>• Show beginner quests
-          `;
-        }
-
-        if (userMsg.toLowerCase().includes("what is chronic")) {
-          response = "Chronic Space is an immersive system that blends learning, real-world skills, community, and adventure to empower people while creating real impact.";
-        }
-
-        messages.innerHTML += `<div><img src="npc-face.jpg" class="npc-face">${response}</div>`;
-        messages.scrollTop = messages.scrollHeight;
-      }
-    });
-  </script>
 </body>
 </html>
