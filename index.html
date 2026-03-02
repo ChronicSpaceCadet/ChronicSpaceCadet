@@ -12,20 +12,31 @@
       background: #f0f0f0; 
       display: flex;
       justify-content: center;
-      align-items: flex-start;
       padding-top: 50px;
+    }
+
+    #npcContainer {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px; /* space between avatar and chat */
+    }
+
+    #npcGif {
+      width: 120px; /* adjust as needed */
+      cursor: pointer;
     }
 
     #npcBox {
       width: 400px;
-      height: 500px; /* match your scroll image height */
-      background-image: url('scroll.png');
+      height: 500px; /* match scroll image height */
+      background-image: url('scroll.png'); /* full scroll image */
       background-size: contain;
       background-repeat: no-repeat;
-      padding-top: 80px;    /* top roll height */
-      padding-bottom: 80px; /* bottom roll height */
+      padding-top: 80px;    /* space for top roll */
+      padding-bottom: 80px; /* space for bottom roll */
       box-sizing: border-box;
       position: relative;
+      display: none; /* hidden by default, shown when avatar clicked */
     }
 
     #chatArea {
@@ -53,31 +64,45 @@
 </head>
 
 <body>
-  <div id="npcBox">
-    <div id="chatArea">
-      <div id="messages" class="npc-message">
-        Chronic Space Cadet: Hello traveler! I’m the Chronic Space Cadet — a humble guide keeping everything in order. I can help you explore, learn, and survive your first steps. Type "help" to see what I can do for you.
+  <div id="npcContainer">
+    <!-- Avatar GIF -->
+    <img id="npcGif" src="cadet.gif" alt="Chronic Space Cadet">
+
+    <!-- Scroll Chat Box -->
+    <div id="npcBox">
+      <div id="chatArea">
+        <div id="messages" class="npc-message">
+          Chronic Space Cadet: Hello traveler! I’m the Chronic Space Cadet — a humble guide keeping everything in order. I can help you explore, learn, and survive your first steps. Type "help" to see what I can do for you.
+        </div>
       </div>
+      <input id="userInput" placeholder="Say something..." />
     </div>
-    <input id="userInput" placeholder="Say something..." />
   </div>
 
   <script>
+    const npcGif = document.getElementById("npcGif");
+    const npcBox = document.getElementById("npcBox");
     const messages = document.getElementById("messages");
     const input = document.getElementById("userInput");
 
     const chronicSpaceDescription = `Chronic Space is a learning immersive game empowering interactive collaborative experiences. It intertwines learning, empowerment, and incentives to keep people playing. It teaches them and gradually helps them create things with real-world impact — from personal growth to world change. The system gives choices that guide members naturally to what they like, want, and need to learn. Depending on interests, quests teach everything from art creation, business setup, growing food, to designing scalable systems, and connecting social platforms and real-world actions together. The entire environment empowers people while generating meaningful projects and resources.`;
 
+    // Show chat when avatar clicked
+    npcGif.addEventListener("click", () => {
+      npcBox.style.display = "block";
+    });
+
+    // Handle input
     input.addEventListener("keydown", function(e) {
       if (e.key === "Enter") {
         const userMsg = input.value.trim();
         if (!userMsg) return;
 
-        // User message
+        // Add user message
         messages.innerHTML += `<div class="user-message">You: ${userMsg}</div>`;
         input.value = "";
 
-        // NPC response
+        // Determine NPC response
         let response = "I don't know how to answer that yet.";
 
         if (userMsg.toLowerCase() === "help") {
