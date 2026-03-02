@@ -1,111 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Chronic Space Cadet</title>
+  <title>Chronic Space Cadet Chat</title>
+  
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+
   <style>
-    body { font-family: Arial; background: #f0f0f0; }
-    .npc-container { width: 400px; margin: 50px auto; text-align: center; }
-    .npc-gif { width: 200px; }
-    #chatBox {
-      display: none;
-      background: white;
-      border-radius: 10px;
-      padding: 15px;
-      margin-top: 10px;
-      box-shadow: 0 0 10px #aaa;
+    body { 
+      font-family: Arial, sans-serif; 
+      background: #f0f0f0; 
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 50px;
     }
-    #messages {
-      height: 220px;
+
+    #npcBox {
+      width: 400px;
+      height: 500px; /* match your scroll image height */
+      background-image: url('scroll.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      padding-top: 80px;    /* top roll height */
+      padding-bottom: 80px; /* bottom roll height */
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    #chatArea {
+      height: calc(100% - 160px); /* middle flat area */
       overflow-y: auto;
-      border: 1px solid #ccc;
-      padding: 5px;
+      padding: 10px 20px;
+      font-family: 'Cinzel', serif;
+    }
+
+    #messages div {
       margin-bottom: 10px;
     }
-    #userInput { width: 100%; padding: 5px; }
-    .talk-btn {
-      margin-top: 5px;
+
+    .npc-message { color: #5b3a1e; font-weight: bold; }
+    .user-message { color: #1e3a5b; }
+
+    #userInput {
+      width: calc(100% - 20px);
       padding: 5px 10px;
-      background: #4CAF50;
-      color: white;
-      cursor: pointer;
-      border-radius: 5px;
-      display: inline-block;
+      margin-top: 10px;
+      box-sizing: border-box;
+      font-family: 'Cinzel', serif;
     }
   </style>
 </head>
 
 <body>
-
-<div class="npc-container">
-
-  <!-- YOUR GIF -->
-  <img src="npc-animation.gif" class="npc-gif">
-
-  <!-- TALK BUTTON -->
-  <div class="talk-btn" id="openChat">💬 Talk</div>
-
-  <!-- CHAT -->
-  <div id="chatBox">
-    <div id="messages"></div>
-    <input id="userInput" placeholder="Type here..." />
+  <div id="npcBox">
+    <div id="chatArea">
+      <div id="messages" class="npc-message">
+        Chronic Space Cadet: Hello traveler! I’m the Chronic Space Cadet — a humble guide keeping everything in order. I can help you explore, learn, and survive your first steps. Type "help" to see what I can do for you.
+      </div>
+    </div>
+    <input id="userInput" placeholder="Say something..." />
   </div>
 
-</div>
+  <script>
+    const messages = document.getElementById("messages");
+    const input = document.getElementById("userInput");
 
-<script>
-const openChat = document.getElementById("openChat");
-const chatBox = document.getElementById("chatBox");
-const messages = document.getElementById("messages");
-const input = document.getElementById("userInput");
+    const chronicSpaceDescription = `Chronic Space is a learning immersive game empowering interactive collaborative experiences. It intertwines learning, empowerment, and incentives to keep people playing. It teaches them and gradually helps them create things with real-world impact — from personal growth to world change. The system gives choices that guide members naturally to what they like, want, and need to learn. Depending on interests, quests teach everything from art creation, business setup, growing food, to designing scalable systems, and connecting social platforms and real-world actions together. The entire environment empowers people while generating meaningful projects and resources.`;
 
-let introDone = false;
+    input.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        const userMsg = input.value.trim();
+        if (!userMsg) return;
 
-openChat.onclick = () => {
-  chatBox.style.display = "block";
-  input.focus();
+        // User message
+        messages.innerHTML += `<div class="user-message">You: ${userMsg}</div>`;
+        input.value = "";
 
-  if (!introDone) {
-    messages.innerHTML += `
-    <div>
-    Chronic Space Cadet: Hello explorer 👋  
-    I am a helper, guide, and messenger of this world.  
-    I help new travelers understand the systems, complete quests, and find their path.  
-    If you need guidance, type <b>help</b>.
-    </div>`;
-    introDone = true;
-  }
-};
+        // NPC response
+        let response = "I don't know how to answer that yet.";
 
-input.addEventListener("keydown", function(e) {
-  if (e.key === "Enter") {
-    const userMsg = input.value.trim().toLowerCase();
-    if (!userMsg) return;
+        if (userMsg.toLowerCase() === "help") {
+          response = `Options:\n1) What is ChronicSpace?`;
+        } else if (userMsg.toLowerCase() === "1" || userMsg.toLowerCase() === "what is chronicspace?") {
+          response = chronicSpaceDescription;
+        } else if (userMsg.toLowerCase().includes("hello")) {
+          response = "Hello traveler! Welcome again to Chronic Space.";
+        }
 
-    messages.innerHTML += `<div>You: ${userMsg}</div>`;
-    input.value = "";
-
-    // STEP 2: HELP OPTIONS
-    if (userMsg === "help") {
-      messages.innerHTML += `
-      <div>
-      You may ask:
-      <br>1. What is Chronic Space?
-      </div>`;
-    }
-
-    // STEP 3: WHAT IS CHRONIC SPACE
-    if (userMsg.includes("what is chronic")) {
-      messages.innerHTML += `
-      <div>
-      Chronic Space is a learning, immersive, interactive system that blends empowerment, real-world skills, and community.  
-      It guides people through quests, missions, and collaboration to help them grow, build, and create real impact in their lives and the world.
-      </div>`;
-    }
-
-    messages.scrollTop = messages.scrollHeight;
-  }
-});
-</script>
-
+        messages.innerHTML += `<div class="npc-message">Chronic Space Cadet: ${response}</div>`;
+        messages.scrollTop = messages.scrollHeight;
+      }
+    });
+  </script>
 </body>
 </html>
